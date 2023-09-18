@@ -1,15 +1,8 @@
 # Semantic Segment Anything
 
-
-![SAM design](assets/model_diagram.png?raw=true)
-
 Semantic SAM extends SAM by also producing a semantic prediction for each mask. Semantic-SAM can be used as an open-vocabulary instance segmentation model.
 
-
-<p float="left">
-  <img src="assets/overview.svg?raw=true" width="100%" />
-</p>
-
+![SAM design](assets/overview.svg?raw=true)
 
 
 ## Semantic SAM Training Data
@@ -17,9 +10,8 @@ Semantic SAM extends SAM by also producing a semantic prediction for each mask. 
 Semantic SAM was trained in a weakly supervised approach. We build our dataset by generating annotations for LAION image-text pairs. Contrary to previous approaches, we expand the number of candidate pseudo-labels by leveraging a language model to produce more candidates for objects that may be visible in the image but not explicitly mentioned in the caption. This bridges the gap of image captions describing an image as a whole and thus making them not ideal to derive pseudo labels. 
 
 
-<p float="left">
-  <img src="assets/data_approach.svg?raw=true" width="100%" />
-</p>
+![SAM design](assets/data_approach.svg?raw=true)
+
 
 **Semantic-SAM** was trained to maintain **SAM** high quality mask outputs
 
@@ -42,3 +34,7 @@ First download a [model checkpoint](#model-checkpoints). Then follow the ssam_pl
 
 ## License
 The model is licensed under the [Apache 2.0 license](LICENSE).
+
+
+## TODO
+Upload code for data generation
