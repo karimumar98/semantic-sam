@@ -1,0 +1,101 @@
+DATA_LOADERS:
+  LAION: 
+    NAME: get_multi_node_laion_dataloader
+    batch_size:  4
+    url: [
+      "/cluster/project/zhang/umarka/clip_detector/datasets/four_queries_per_caption/data_v3/",
+      "/cluster/project/zhang/umarka/clip_detector/datasets/laion_run_2",
+      ]
+    num_masks_per_image: 1
+    box_input: "xyxy"
+    return_dict: True
+    num_workers: 4
+    train_split: 0.8
+    num_train_samples_per_epoch: 3000000
+    num_val_samples_per_epoch: 200000
+  SA1B:
+    NAME: get_SA_1B_dataloader
+    batch_size: 1
+    num_workers: 4
+    num_masks_per_image: 4
+    root_folder: "/cluster/project/zhang/umarka/clip_detector/datasets/SA1B/"
+    return_dict: True
+    train_split: 0.8
+
+training:
+  optimizer:
+    type: AdamW
+    optim_params:
+      lr: 0.001
+      weight_decay: 0.01
+  samples_seen: 1000000
+  seed: 69
+  epochs: 10
+  save_steps: 1000
+  train_step_function: train_step_general
+  train_args:
+    whole_image: False
+    whole_image_prob: 1.0
+    text_prompt: False
+    text_prompt_prob: 200.0
+    semantic_bbox_loss: False
+    semantic_bbox_loss_weight: 20.0
+    mutate_bbox: True
+    multimask: True
+    multiprompt: True #Do we sample multiple prompt types per train sample?
+    loss_reduction: uncoupled
+    iterative: False
+    num_clicks: 5
+    amp: True
+
+  train_params:
+    text_decoder: True
+    text_encoder: False
+    sam_prompt_encoder: True ## Unfreeze all of sam
+    sam_image_encoder: True ## Unfreeze all of sam
+    sam_mask_decoder: True ## sUnfreeze all of sam
+  loss:
+    global_loss: True
+    loss_reduction: uncoupled
+    loss_functions:
+
+      CombinedLoss:
+        weight: 1.0
+
+      SymmetricContrastiveLoss: 
+        temperature: 1.0
+        weight: 2.0
+
+      ## For IOU
+      MSE_Loss:
+        temperature: 1.0
+        weight: 1.0
+
+      Cosine_MSE_Loss:
+        weight: 1.0
+
+
+eval:    
+  eval_every: 500000
+  eval_steps: 200
+
+model:
+  model_type: "vit_l"
+  clip_dim: 768
+  checkpoint: "/cluster/project/zhang/umarka/clip_detector/sam_vit_l_0b3195.pth"
+  text_encoder: True
+  use_semantic_tokens: True
+  use_semantic_hyper_networks: True
+
+output:
+  log_every: 5
+  output_folder: "/cluster/scratch/umarka/ssam/"
+  experiment: "vit_l"
+  wandb: True
+  TENSORBOARD: False
+
+distributed:
+  use_deistributed: True
+  backend: "nccl"
+
+
