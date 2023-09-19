@@ -7,12 +7,16 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="segment_anything",
+    name="semantic_segment_anything",
     version="1.0",
-    install_requires=[],
+    install_requires=[
+        "groundingdino @ git+https://github.com/IDEA-Research/GroundingDINO@beeb4c29cbfa915b7aafce9bf0a23f2208498a43",
+        "scikit-image",
+        "open_clip_torch"
+    ],
     packages=find_packages(exclude="notebooks"),
     extras_require={
-        "all": ["matplotlib", "pycocotools", "opencv-python", "onnx", "onnxruntime"],
+        "all": ["matplotlib", "pycocotools", "opencv-python"],
         "dev": ["flake8", "isort", "black", "mypy"],
     },
 )

@@ -6,21 +6,21 @@ import os
 from itertools import islice
 import tqdm
 import builtins
+import numpy as np
+import random
+import json
 
 ## Distributed imports
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 from socket import gethostname
-from segment_anything.utils.transforms import ResizeLongestSide
-from segment_anything.utils.config import read_config
-from segment_anything.utils.optimizer import build_optimizer
-import webdataset as wds
-import numpy as np
-import random
-import json
+from semantic_segment_anything.utils.transforms import ResizeLongestSide
+from semantic_segment_anything.utils.config import read_config
+from semantic_segment_anything.utils.optimizer import build_optimizer
+
 
 import wandb
-from segment_anything.eval import seginw
+from semantic_segment_anything.eval import seginw
 
 
 from torch.utils.tensorboard import SummaryWriter
@@ -28,18 +28,16 @@ from torch.utils.tensorboard import SummaryWriter
 ## Custom imports
 import sys
 # sys.path.append("/cluster/project/zhang/umarka/clip_detector/semantic-segment-anything/segment_anything")
-from segment_anything.modeling.frozensam import FrozenSAM
-from segment_anything.utils.data import get_data_loaders, mixed_dataloader
-from segment_anything.utils.loss import DiceLoss, FocalLoss, CombinedLoss, ContrastiveLoss, SymmetricContrastiveLoss, MultiNodeGlobalLoss, MSE_Loss, GeneralizedContrastiveLoss, MaskedContrastiveLoss, SimpleLoss, Criterion
-from segment_anything.utils.multinode_utils import supress_output, setup_multinode_training, all_gather_with_gradient
-from segment_anything.utils.train_steps import get_train_step_function
+from semantic_segment_anything.modeling.frozensam import FrozenSAM
+from semantic_segment_anything.utils.data import get_data_loaders, mixed_dataloader
+from semantic_segment_anything.utils.loss import DiceLoss, FocalLoss, CombinedLoss, ContrastiveLoss, SymmetricContrastiveLoss, MultiNodeGlobalLoss, MSE_Loss, GeneralizedContrastiveLoss, MaskedContrastiveLoss, SimpleLoss, Criterion
+from semantic_segment_anything.utils.multinode_utils import supress_output, setup_multinode_training, all_gather_with_gradient
+from semantic_segment_anything.utils.train_steps import get_train_step_function
 from datetime import timedelta
 
 from hanging_threads import start_monitoring
-# start_monitoring(seconds_frozen=100, test_interval=100)
 
-from segment_anything.eval import eval_coco, Capturing
-# from segment_anything.eval import seginw
+from semantic_segment_anything.eval import eval_coco, Capturing
 from torch import nn
 
 def parse_args():
@@ -65,10 +63,6 @@ def main():
     assert args.config, "Please provide a config file"
     
     cfg = read_config(args.config)
-
-    #model = FrozenSAM(cfg)
-    
-
 
     ## Setup either multinode or single node training
     if cfg["distributed"]['use_deistributed'] and 'WORLD_SIZE' in os.environ:

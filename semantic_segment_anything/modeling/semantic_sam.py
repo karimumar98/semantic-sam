@@ -1,9 +1,8 @@
 import sys
-sys.path.append("..")
-from segment_anything import sam_model_registry
-from segment_anything.utils.transforms import ResizeLongestSide
-from segment_anything.utils.config import configurable
-from segment_anything.modeling.mask_decoder import MLP
+
+from .. import sam_model_registry
+from ..utils.config import configurable
+from .mask_decoder import MLP
 from torch import nn
 import torch
 import numpy as np

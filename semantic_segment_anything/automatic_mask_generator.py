@@ -32,8 +32,6 @@ from .utils.amg import (
 )
 
 from .eval import get_class_probs, SEGINW_NAMES
-from detectron2.structures.instances import Instances
-from detectron2.structures.boxes import Boxes
 import math
 
 

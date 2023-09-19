@@ -1,7 +1,7 @@
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 from socket import gethostname
-from segment_anything.utils.transforms import ResizeLongestSide
+from semantic_segment_anything.utils.transforms import ResizeLongestSide
 import webdataset as wds
 import numpy as np
 import random

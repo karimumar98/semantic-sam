@@ -1,4 +1,3 @@
-from dotmap import DotMap
 import yaml
 import functools
 import inspect
@@ -8,7 +7,7 @@ import inspect
 
 def read_config (config_path):
 
-    ## reads configs and returns a dotmap
+    ## reads configs and returns a dict
 
     with open(config_path, "r") as stream:
         try:
