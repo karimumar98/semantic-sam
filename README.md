@@ -33,10 +33,10 @@ pip3 install torch torchvision torchaudio
 
 
 
-Install all requirements using:
+Install semantic-sam with:
 
 ```
-pip install -r requirements.txt
+pip install git+https://github.com/karimumar98/semantic-sam.git
 ```
 
 
@@ -49,7 +49,7 @@ First download a [model checkpoint](#model-checkpoints). Then follow the ssam_pl
 The model is licensed under the [Apache 2.0 license](LICENSE).
 
 
-## acknowledgement
+## acknowledgements
 Big thanks to the people @ Snorkel AI for their support and making this possible.
 
 
